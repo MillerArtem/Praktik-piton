@@ -1,0 +1,50 @@
+1)
+def analyze_list(lst):
+    if not lst:
+        return None  
+    
+    sorted_lst = sorted(lst)
+
+    max_val = max(lst)
+    min_val = min(lst)
+    avg_val = sum(lst) / len(lst)
+
+    n = len(sorted_lst)
+    if n % 2 == 0:
+        med_val = (sorted_lst[n // 2 - 1] + sorted_lst[n // 2]) / 2
+    else:
+        med_val = sorted_lst[n // 2]
+
+    return {
+        'max': max_val,
+        'min': min_val,
+        'avg': avg_val,
+        'med': med_val
+    }
+
+lst = [5, 1, 8, 7, 2, 9, 4]
+result = analyze_list(lst)
+print(result)
+
+2) 
+def tuple_stats(tpl):
+    total_sum = sum(tpl)
+    
+    avg_value = total_sum / len(tpl) if tpl else 0 
+    
+    unique_elements = tuple(set(tpl))
+
+    return (total_sum, avg_value, unique_elements)
+
+tpl = (1, 2, 3, 4, 4, 5, 1, 2)
+result = tuple_stats(tpl)
+print(result)
+
+3)
+def symmetric_difference(set1, set2):
+    return set1.symmetric_difference(set2)
+
+set1 = {1, 2, 3, 4}
+set2 = {3, 4, 5, 6}
+result = symmetric_difference(set1, set2)
+print(result)

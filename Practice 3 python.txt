@@ -1,0 +1,78 @@
+1)
+from datetime import datetime, timedelta
+
+def datetime_info(date_str):
+    date = datetime.strptime(date_str, '%Y-%m-%d')
+    
+    formatted_date = date.strftime('%d-%m-%Y')
+    
+    weekday = date.strftime('%A')
+    
+    next_year = datetime(date.year + 1, 1, 1)
+    days_until_next_year = (next_year - date).days
+    
+    return {
+        'formatted_date': formatted_date,
+        'weekday': weekday,
+        'days_until_next_year': days_until_next_year
+    }
+
+date_str = '2024-10-11'
+result = datetime_info(date_str)
+print(result)
+
+2)
+def write_and_read_file(filename, content):
+    with open(filename, 'w') as file:
+        file.write(content)
+    
+    with open(filename, 'r') as file:
+        return file.read()
+
+filename = 'example.txt'
+content = 'Hello, this is a test.'
+result = write_and_read_file(filename, content)
+print(result)
+
+4)
+import os
+
+def ensure_directory_exists(directory_path):
+    if not os.path.exists(directory_path):
+        os.makedirs(directory_path)
+        print(f"Каталог '{directory_path}' был создан.")
+    else:
+        print(f"Каталог '{directory_path}' уже существует.")
+
+directory_path = 'C:/Users/YourUsername/fgr' 
+ensure_directory_exists(directory_path)
+
+5)
+import os
+from datetime import datetime
+
+def file_stats(filepath):
+    if not os.path.isfile(filepath):
+        raise ValueError(f"The file '{filepath}' does not exist or is not a file.")
+
+    file_size = os.path.getsize(filepath)
+    
+    last_modified_time = os.path.getmtime(filepath)
+    last_modified = datetime.fromtimestamp(last_modified_time).strftime('%Y-%m-%d %H:%M:%S')
+    
+    file_name, file_extension = os.path.splitext(os.path.basename(filepath))
+
+    return {
+        'size': file_size,
+        'last_modified': last_modified,
+        'name': file_name,
+        'extension': file_extension
+    }
+
+if __name__ == "__main__":
+    filepath = 'C:/Users/Documents/dep.txt''  
+    try:
+        result = file_stats(filepath)
+        print(result)
+    except ValueError as e:
+        print(e)

@@ -1,0 +1,76 @@
+import requests
+import random
+
+BASE_URL = "https://rickandmortyapi.com/api"
+
+def get_random_character():
+    response = requests.get(f"{BASE_URL}/character")
+    data = response.json()
+    total_characters = data['info']['count']
+    
+    random_id = random.randint(1, total_characters)
+    
+    character_response = requests.get(f"{BASE_URL}/character/{random_id}")
+    character_data = character_response.json()
+    
+    print(f"Случайный персонаж: {character_data['name']}")
+    print(f"Статус: {character_data['status']}")
+    print(f"Вид: {character_data['species']}")
+    print(f"Местоположение: {character_data['location']['name']}")
+    print(f"Эпизоды: {len(character_data['episode'])}")
+
+def search_character_by_name(name):
+    response = requests.get(f"{BASE_URL}/character/?name={name}")
+    if response.status_code == 200:
+        data = response.json()
+        characters = data['results']
+        for character in characters:
+            print(f"Имя: {character['name']}")
+            print(f"Статус: {character['status']}")
+            print(f"Вид: {character['species']}")
+            print(f"Местоположение: {character['location']['name']}")
+            print('---')
+    else:
+        print(f"Персонаж с именем '{name}' не найден.")
+
+def get_all_locations():
+    locations = []
+    page = 1
+    
+    while True:
+        response = requests.get(f"{BASE_URL}/location?page={page}")
+        data = response.json()
+        locations.extend(data['results'])
+        if data['info']['next'] is None:
+            break
+        page += 1
+
+    print(f"Всего локаций: {len(locations)}")
+    for location in locations:
+        print(f"Локация: {location['name']}, Тип: {location['type']}, Измерение: {location['dimension']}")
+
+def search_episode_by_name(name):
+    response = requests.get(f"{BASE_URL}/episode/?name={name}")
+    if response.status_code == 200:
+        data = response.json()
+        episodes = data['results']
+        for episode in episodes:
+            print(f"Эпизод: {episode['name']}")
+            print(f"Дата выхода: {episode['air_date']}")
+            print(f"Код эпизода: {episode['episode']}")
+            print('---')
+    else:
+        print(f"Эпизод с названием '{name}' не найден.")
+
+if __name__ == "__main__":
+    print("1. Получение случайного персонажа")
+    get_random_character()
+
+    print("\n2. Поиск персонажа по имени 'Rick'")
+    search_character_by_name('Rick')
+
+    print("\n3. Получение списка всех локаций")
+    get_all_locations()
+
+    print("\n4. Поиск эпизода по названию 'Pilot'")
+    search_episode_by_name('Pilot')
